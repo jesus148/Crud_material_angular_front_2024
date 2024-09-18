@@ -1,0 +1,73 @@
+
+ Angular Material Frontend
+
+
+DONDE ME QUEDE
+https://www.youtube.com/watch?v=2jRYxuuWGFI&t=351s
+38:55
+
+
+
+1.
+
+C:\Users\jesus\Desktop\JESUS\ANGULAR\crud_ejercisio_3\front>ng new frontend
+? Which stylesheet format would you like to use? CSS             [ https://developer.mozilla.org/docs/Web/CSS                     ]
+? Do you want to enable Server-Side Rendering (SSR) and Static Site Generation (SSG/Prerendering)? Yes
+
+
+2.
+  estuctura proyecto
+
+crear folders ,manualmente>
+    components
+    services > para los servicios tambien sirve para compartir datos entre componentes reutilzar codigo
+    shared
+    interfaces
+
+componentes con cli===============
+ PS C:\Users\jesus\Desktop\JESUS\ANGULAR\crud_ejercisio_3\front\frontend> ng g c components/list-persons
+
+ PS C:\Users\jesus\Desktop\JESUS\ANGULAR\crud_ejercisio_3\front\frontend> ng g c components/agregar-editar-persona
+
+servicios :=======================
+ PS C:\Users\jesus\Desktop\JESUS\ANGULAR\crud_ejercisio_3\front\frontend> ng g --help
+
+PS C:\Users\jesus\Desktop\JESUS\ANGULAR\crud_ejercisio_3\front\frontend> ng g s services/persona
+
+comandos de ayuda:
+  ng g --help
+
+
+
+
+3. INSTALANDO ANGULAR Material
+   ----DOCUMENTACION
+
+ng add @angular/material --- ejecutar
+
+salen preguntas >
+
+ > sale 1 primero poner = y
+
+ >  ? Choose a prebuilt theme name, or "custom" for a custom theme: Azure/Blue         [Preview: https://material.angular.io?theme=azure-blue]  ----elige el tema luego lo puede cambiar en el angular.json
+   https://material.angular.io/guide/theming --- DOCUMENTACION pa cambiar de color
+
+>  ? Set up global Angular Material typography styles? (y/N) ---y
+
+>
+   ? Set up global Angular Material typography styles? yes
+   ? Include the Angular animations module? (Use arrow keys)
+  ❯ Include and enable animations   ---- habilitar
+  Include, but disable animations
+  Do not include
+
+
+> en el index.html (componente principal)
+  <!-- esto lo agrega materia auto o tambien puedes ponerlo manual  -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+>
+  styles.css  ---componente principal material tambien agrega auto
+
+> como es un componente standole se agrega directamente
