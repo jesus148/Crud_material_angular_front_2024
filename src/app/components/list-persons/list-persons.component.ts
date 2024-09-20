@@ -8,7 +8,10 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import { Persona } from '../../interfaces/persona';
 import { CommonModule } from '@angular/common';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
-
+import { MatSort } from '@angular/material/sort';
+import {MatSortModule} from '@angular/material/sort';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 
 
 // data momentanea
@@ -16,28 +19,28 @@ const listaPersonas: Persona[] = [
     {nombre:  'tomas' , apellido: 'Hydrogen', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
       fechaNacimiento: new Date()
     },
-    {nombre:  'tomas' , apellido: 'Hydrogen', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
+    {nombre:  'jesus' , apellido: 'Hydrogen', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
+      fechaNacimiento: new Date()
+    },
+    {nombre:  'tomas' , apellido: 'auto', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
       fechaNacimiento: new Date()
     },
     {nombre:  'tomas' , apellido: 'Hydrogen', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
       fechaNacimiento: new Date()
     },
-    {nombre:  'tomas' , apellido: 'Hydrogen', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
-      fechaNacimiento: new Date()
-    },
-    {nombre:  'tomas' , apellido: 'Hydrogen', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
+    {nombre:  'tomas' , apellido: 'jesus', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
       fechaNacimiento: new Date()
     }
     ,
-    {nombre:  'tomas' , apellido: 'Hydrogen', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
+    {nombre:  'aquino' , apellido: 'baboso', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
       fechaNacimiento: new Date()
     }
     ,
-    {nombre:  'tomas' , apellido: 'Hydrogen', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
+    {nombre:  'tomas' , apellido: 'wendy', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
       fechaNacimiento: new Date()
     }
     ,
-    {nombre:  'tomas' , apellido: 'Hydrogen', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
+    {nombre:  'marco' , apellido: 'Hydrogen', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
       fechaNacimiento: new Date()
     }
 ];
@@ -48,16 +51,17 @@ const listaPersonas: Persona[] = [
   selector: 'app-list-persons',
   standalone: true,
   // CommonModule : imporata esto para los pipe
-  imports: [MatToolbarModule, MatIconModule , MatCardModule , MatTableModule , CommonModule , MatPaginatorModule],
-  templateUrl: './list-persons.component.html',
-  styleUrl: './list-persons.component.css'
+  imports: [MatToolbarModule, MatIconModule , MatCardModule , MatTableModule , CommonModule , MatPaginatorModule ,
+    MatSortModule , MatFormFieldModule , MatInputModule],
+  templateUrl: './list-persons.component.html', //lo q se vera
+  styleUrl: './list-persons.component.css'  //estilos
 })
 // implements OnInit , AfterViewInit : para el paginator
 export class ListPersonsComponent  implements OnInit , AfterViewInit{
 
 
   // nombre de los head de la tabla = en el html
-  displayedColumns: string[] = ['name' ,  'apellido' ,  'correo' ,  'tipoDocumento' ,   'documento' ,     'fecha de nacimiento'];
+  displayedColumns: string[] = ['name' ,  'apellido' ,  'correo' ,  'tipoDocumento' ,   'documento' ,     'fecha de nacimiento' ,  'acciones'];
 
 
   // data para listar en la tabla
@@ -69,24 +73,40 @@ export class ListPersonsComponent  implements OnInit , AfterViewInit{
 
   // paginator
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  // para el ordenamiento
+  @ViewChild(MatSort) sort!: MatSort;
 
 
+
+  // inicia
   constructor(){
       // paginator
     this.dataSource = new MatTableDataSource(listaPersonas);
   }
-
   ngOnInit(): void {
   }
 
 
   // paginator
+  // se carga despues de inciar el componente o la vista solo 1 vez
   ngAfterViewInit() {
+    // paginacion
     this.dataSource.paginator = this.paginator;
+    // ordenamiento
+    this.dataSource.sort = this.sort;
   }
 
 
 
 
+
+
+  // metodo para filtrar por el input
+  applyFilter(event: Event) {
+    // guarda el valor
+    const filterValue = (event.target as HTMLInputElement).value;
+    // filtra de la data x el campo de apellido y nombre
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
 }

@@ -6,21 +6,31 @@
 
 
 <!-- mat-card : contenedor de contenido para fotos y videos .etc -->
-<mat-card appearance="outlined">
+<mat-card >
+
+  <!-- para filtrar -->
+  <mat-form-field appearance="fill">
+    <mat-label>Filtro</mat-label>
+    <!-- keyup : funcion le envia el valor del input , deja de escribir-->
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+  </mat-form-field>
+
   <!-- [dataSource]="dataSource" : sacamos la data del controller  -->
   <!-- mat-elevation-z15 : es una especie de css -->
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z15">
+  <!-- matSort  : es para el ordenamiento  -->
+  <table matSort  mat-table [dataSource]="dataSource" class="mat-elevation-z15">
 
-    <!-- matColumnDef="position" : = displayedColumns del controller  -->
+    <!-- matColumnDef="name" : = displayedColumns del controller  -->
+    <!-- mat-sort-header : es la columna q quieres filtrar -->
     <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
       <!-- desenvolsando data  , usando la variable element , desenvolsando con la clase guia  -->
       <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
     </ng-container>
 
 
     <ng-container matColumnDef="apellido">
-      <th mat-header-cell *matHeaderCellDef> Apellido </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellido </th>
       <!-- desenvolsando data ,  -->
       <td mat-cell *matCellDef="let element"> {{element.apellido}} </td>
     </ng-container>
@@ -51,6 +61,14 @@
       <!-- date:'dd/mm/yy' : formato de fecha
        https://v17.angular.io/api/common/DatePipe -->
       <td mat-cell *matCellDef="let element"> {{element.fechaNacimiento | date:'dd/mm/yy' }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef>  </th>
+      <!-- desenvolsando data  -->
+      <td mat-cell *matCellDef="let element">
+        Editar y Eliminar
+       </td>
     </ng-container>
 
 
