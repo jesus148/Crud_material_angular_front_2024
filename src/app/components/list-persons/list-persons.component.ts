@@ -11,8 +11,11 @@ import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import {MatSortModule} from '@angular/material/sort';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';//modal
 import {MatInputModule} from '@angular/material/input';
-
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatButtonModule} from '@angular/material/button';
+import { AgregarEditarPersonaComponent } from '../agregar-editar-persona/agregar-editar-persona.component';
 
 // data momentanea
 const listaPersonas: Persona[] = [
@@ -46,22 +49,26 @@ const listaPersonas: Persona[] = [
 ];
 
 
-
+// decorador
 @Component({
+  // id componnente
   selector: 'app-list-persons',
+  // actual angular
   standalone: true,
+  // poder angular y otros componentes
   // CommonModule : imporata esto para los pipe
   imports: [MatToolbarModule, MatIconModule , MatCardModule , MatTableModule , CommonModule , MatPaginatorModule ,
-    MatSortModule , MatFormFieldModule , MatInputModule],
+    MatSortModule , MatFormFieldModule , MatInputModule , MatTooltipModule , MatButtonModule , MatDialogModule],
   templateUrl: './list-persons.component.html', //lo q se vera
   styleUrl: './list-persons.component.css'  //estilos
 })
+// clase
 // implements OnInit , AfterViewInit : para el paginator
 export class ListPersonsComponent  implements OnInit , AfterViewInit{
 
 
   // nombre de los head de la tabla = en el html
-  displayedColumns: string[] = ['name' ,  'apellido' ,  'correo' ,  'tipoDocumento' ,   'documento' ,     'fecha de nacimiento' ,  'acciones'];
+  displayedColumns: string[] = ['name' ,  'apellido' ,  'correo' ,  'tipoDocumento' ,   'documento' ,   'fecha de nacimiento' ,  'acciones'];
 
 
   // data para listar en la tabla
@@ -79,7 +86,8 @@ export class ListPersonsComponent  implements OnInit , AfterViewInit{
 
 
   // inicia
-  constructor(){
+  // dialog:MatDialog : para el modal
+  constructor(public dialog:MatDialog){
       // paginator
     this.dataSource = new MatTableDataSource(listaPersonas);
   }
@@ -108,5 +116,42 @@ export class ListPersonsComponent  implements OnInit , AfterViewInit{
     // filtra de la data x el campo de apellido y nombre
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+
+
+
+  // modal comonente hijo
+  addEditPerson(){
+    // abrir
+    // muestra otro componente
+    const dialogRef = this.dialog.open(AgregarEditarPersonaComponent, {
+      // estilos para el componente mostrado
+      width:'6  50px',
+      disableClose:true
+    });
+
+    // cerrar
+    // cerrar componente
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

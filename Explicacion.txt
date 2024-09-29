@@ -4,7 +4,7 @@
 
 DONDE ME QUEDE
 https://www.youtube.com/watch?v=2jRYxuuWGFI&t=351s
-49:00
+1:11:42 
 
 
 1.
@@ -70,3 +70,36 @@ salen preguntas >
   styles.css  ---componente principal material tambien agrega auto
 
 > como es un componente standole se agrega directamente
+
+
+
+4.
+Instalando iconos :
+
+documentacion https://material.angular.io/components/icon/overview
+
+import {MatIconModule} from '@angular/material/icon';
+  imports: [MatIconModule],
+
+
+ Font icons with ligatures
+Some fonts are designed to show icons by using ligatures, for example by rendering the text "home" as a home image. To use a ligature icon, put its text in the content of the mat-icon component.
+
+By default, <mat-icon> expects the Material icons font. (You will still need to include the HTML to load the font and its CSS, as described in the link).
+
+Material icons font : selecciona eso
+
+
+https://fonts.google.com/icons?hl=es-419&selected=Material+Symbols+Outlined:edit:FILL@0;wght@400;GRAD@0;opsz@24&icon.query=edit&icon.size=24&icon.color=%23e8eaed
+> dirigite a google fonts u busca tu icono
+
+>
+ <mat-icon>edit</mat-icon>  : agrega eso la primer en minuscula
+
+ si no aparece entonces averiguar mas
+
+
+
+5. creacion de modulo
+
+PS C:\Users\jesus\Desktop\JESUS\ANGULAR\crud_ejercisio_3\front\frontend> ng g m shared

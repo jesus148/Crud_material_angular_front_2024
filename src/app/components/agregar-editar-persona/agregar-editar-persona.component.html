@@ -1,1 +1,162 @@
-<p>agregar-editar-persona works!</p>
+
+
+<!-- MODAL PA ACTUALIZAR Y AGREGAR -->
+<!-- mat-dialog-content : es el modal  -->
+<!-- mat-form-field : formulario -->
+<h2 mat-dialog-title>Agregar Persona</h2>
+
+
+<!-- [formGroup]="form" : igual al form en .ts -->
+<form [formGroup]="form" (ngSubmit)="addEditPersona()">
+
+
+  <!-- mat-dialog-content  : contenido del modal  -->
+  <mat-dialog-content class="mat-typography">
+
+
+
+    <!-- nombre  -->
+    <div class="row">
+      <div class="column">
+        <!-- appearance="fill" : para q se vea mejor  -->
+        <mat-form-field appearance="fill">
+          <!-- label  -->
+          <mat-label>Nombre</mat-label>
+          <!-- input de texto -->
+          <!-- autocomplete="off" : desabilita el autocompletado -->
+          <!-- formControlName="nombre" : relacion con  su form del .ts -->
+          <input matInput formControlName="nombre" placeholder="Ingrese Nombre" autocomplete="off" />
+        </mat-form-field>
+        <div class="error" >
+          <!--hasError('required') : se muestra si hay error en el required -->
+          <!-- ('nombre')?.touched : si toco el input -->
+          <span *ngIf="form.get('nombre')?.hasError('required') && form.get('nombre')?.touched ">
+            el nombre es un campo <strong>requerido</strong>
+           </span>
+           <!-- validacion para maximo 20 caracteres -->
+          <span *ngIf="form.get('nombre')?.hasError('maxlength')">
+            el nombre es un campo <strong>requerido</strong>
+           </span>
+        </div>
+      </div>
+
+
+
+
+      <!-- apellido -->
+    <div class="column">
+      <mat-form-field appearance="fill">
+        <mat-label>Apellido</mat-label>
+        <input formControlName="apellido" matInput placeholder="Ingrese Apellido" autocomplete="off" />
+      </mat-form-field>
+      <div class="error" >
+        <!--hasError('required') : se muestra si hay error en el required -->
+        <!-- ('nombre')?.touched : si toco el input -->
+        <span *ngIf="form.get('apellido')?.hasError('required') && form.get('apellido')?.touched ">
+          el apellido es un campo <strong>requerido</strong>
+         </span>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- para el correo -->
+  <div class="row">
+    <div class="column">
+      <mat-form-field appearance="fill">
+        <mat-label>Correo</mat-label>
+        <input formControlName="correo" matInput placeholder="Ingrese Correo" autocomplete="off" />
+      </mat-form-field>
+      <div class="error" >
+        <!--hasError('required') : se muestra si hay error en el required -->
+        <!-- ('nombre')?.touched : si toco el input y salgo del input -->
+        <span *ngIf="form.get('correo')?.hasError('required') && form.get('correo')?.touched ">
+          el correo es un campo <strong>requerido</strong>
+         </span>
+         <span *ngIf="form.get('correo')?.hasError('email')  && form.get('correo')?.touched">
+          el correo es <strong>invalido</strong>
+         </span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- para los combos de tipo documento  -->
+  <div class="row">
+    <div class="column">
+      <mat-form-field appearance="fill">
+        <mat-label>Tipo Documento</mat-label>
+        <mat-select formControlName="tipoDocumento" >
+          <!-- tipoDocumento : array lo muestra aqui  -->
+          <!-- [value]="item" : el valor del combo osea lo q selecciona el usuario -->
+          <mat-option *ngFor="let item of tipoDocumento" [value]="item">
+            {{ item }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- documentos -->
+    <div class="column">
+      <mat-form-field appearance="fill">
+        <mat-label>Documento</mat-label>
+        <input formControlName="documento"  matInput placeholder="Ingrese Documento" autocomplete="off">
+      </mat-form-field>
+      <div class="error" >
+        <!--hasError('required') : se muestra si hay error en el required -->
+        <!-- ('nombre')?.touched : si toco el input -->
+        <span *ngIf="form.get('documento')?.hasError('required') && form.get('documento')?.touched ">
+          el documento es un campo <strong>requerido</strong>
+         </span>
+        <span *ngIf="form.get('documento')?.hasError('pattern')">
+          el documento debe tener solo <strong>numeros</strong>
+         </span>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- para las fechas -->
+  <div class="row" >
+    <div class="column">
+      <mat-form-field class="example-full-width"  appearance="fill">
+        <!-- titulo -->
+        <mat-label>Fecha de Nacimiento</mat-label>
+        <!-- input  -->
+        <!-- // [max]="maxDate" : desabilita >= fechas mayores a la actual -->
+        <input [max]="maxDate" formControlName="fechaNacimiento" matInput [matDatepicker]="picker">
+        <!-- modal de fecha -->
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker touchUi #picker></mat-datepicker>
+      </mat-form-field>
+      <div class="error" >
+        <!--hasError('required') : se muestra si hay error en el required -->
+        <!-- ('nombre')?.touched : si toco el input -->
+        <span *ngIf="form.get('fechaNacimiento')?.hasError('required') && form.get('fechaNacimiento')?.touched ">
+          la fecha de Nacimiento es un campo <strong>requerido</strong>
+         </span>
+      </div>
+    </div>
+  </div>
+
+
+  </mat-dialog-content>
+
+
+
+  <!-- En Angular Material, la directiva <mat-dialog-actions> se utiliza para definir las acciones dentro de un diálogo (mat-dialog), como los botones de "Aceptar", "Cancelar", u otros botones de acción que quieras colocar en el pie del cuadro de diálogo. -->
+  <mat-dialog-actions align="end">
+    <!-- mat-dialog-close : pa cerrar  -->
+    <button type="button" mat-button mat-dialog-close>Cancelar</button>
+    <!-- cdkFocusInitial : se marca primero el focus  -->
+    <!-- type="submit" : es enviar el formulario  -->
+    <!-- [disabled]="form.invalid" : desabilita si el form es invalido -->
+    <button type="submit" [disabled]="form.invalid"   mat-button  >Aceptar</button>
+  </mat-dialog-actions>
+
+
+
+</form>
+

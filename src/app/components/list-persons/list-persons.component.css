@@ -2,9 +2,36 @@ table {
   min-width: 90%;
 }
 
+.btnEdit , .btnDelete{
+  cursor: pointer;
+}
+
+.btnDelete {
+  color: #B0304B;
+}
+
+.btnEdit{
+  color: #4B7BCD;
+}
 
 .mat-form-field {
   font-size: 14px;
   width: 90%;
   margin-right: 10px;
+
+}
+
+/* form filtro */
+.custom{
+  font-size: 14px;
+  width: 95%;
+  margin: auto;
+}
+
+/* boton filtrar */
+.my-class{
+  width: 60%!important;
+  border-radius: 20px;
+  margin-top: 10px;
+
 }
