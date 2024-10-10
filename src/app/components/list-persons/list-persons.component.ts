@@ -16,6 +16,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatButtonModule} from '@angular/material/button';
 import { AgregarEditarPersonaComponent } from '../agregar-editar-persona/agregar-editar-persona.component';
+import { PersonaService } from '../../services/persona.service';
 
 // data momentanea
 const listaPersonas: Persona[] = [
@@ -87,12 +88,29 @@ export class ListPersonsComponent  implements OnInit , AfterViewInit{
 
   // inicia
   // dialog:MatDialog : para el modal
-  constructor(public dialog:MatDialog){
+  // _personaService : un servicio inicia _
+  constructor(public dialog:MatDialog ,private _personaService:PersonaService){
       // paginator
     this.dataSource = new MatTableDataSource(listaPersonas);
   }
   ngOnInit(): void {
+    this.obtenerPersonas();
   }
+
+
+
+  obtenerPersonas(){
+    this._personaService.getPersonas().subscribe( data =>{
+      console.log(data);
+    })
+
+  }
+
+
+
+
+
+
 
 
   // paginator

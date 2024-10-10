@@ -4,7 +4,7 @@
 
 DONDE ME QUEDE
 https://www.youtube.com/watch?v=2jRYxuuWGFI&t=351s
-1:54:10
+3:00:39
 
 
 1.
@@ -103,3 +103,8 @@ https://fonts.google.com/icons?hl=es-419&selected=Material+Symbols+Outlined:edit
 5. creacion de modulo
 
 PS C:\Users\jesus\Desktop\JESUS\ANGULAR\crud_ejercisio_3\front\frontend> ng g m shared
+
+
+
+6.
+ creacion dentro del src > manualmente el folder envionments y sus files
