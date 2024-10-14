@@ -17,40 +17,29 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatButtonModule} from '@angular/material/button';
 import { AgregarEditarPersonaComponent } from '../agregar-editar-persona/agregar-editar-persona.component';
 import { PersonaService } from '../../services/persona.service';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
 
 // data momentanea
-const listaPersonas: Persona[] = [
-    {nombre:  'tomas' , apellido: 'Hydrogen', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
-      fechaNacimiento: new Date()
-    },
-    {nombre:  'jesus' , apellido: 'Hydrogen', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
-      fechaNacimiento: new Date()
-    },
-    {nombre:  'tomas' , apellido: 'auto', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
-      fechaNacimiento: new Date()
-    },
-    {nombre:  'tomas' , apellido: 'Hydrogen', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
-      fechaNacimiento: new Date()
-    },
-    {nombre:  'tomas' , apellido: 'jesus', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
-      fechaNacimiento: new Date()
-    }
-    ,
-    {nombre:  'aquino' , apellido: 'baboso', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
-      fechaNacimiento: new Date()
-    }
-    ,
-    {nombre:  'tomas' , apellido: 'wendy', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
-      fechaNacimiento: new Date()
-    }
-    ,
-    {nombre:  'marco' , apellido: 'Hydrogen', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
-      fechaNacimiento: new Date()
-    }
-];
+// const listaPersonas: Persona[] = [
+//     {nombre:  'tomas' , apellido: 'Hydrogen', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
+//       fechaNacimiento: new Date()
+//     },
+//     {nombre:  'jesus' , apellido: 'Hydrogen', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
+//       fechaNacimiento: new Date()
+//     },
+//     {nombre:  'tomas' , apellido: 'auto', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
+//       fechaNacimiento: new Date()
+//     },
+//     {nombre:  'tomas' , apellido: 'Hydrogen', correo: 'perez@gamil.com', tipoDocumentos: 'dni' , documento: 74782 ,
+//       fechaNacimiento: new Date()
+//     }
+// ];
 
 
 // decorador
+
+
 @Component({
   // id componnente
   selector: 'app-list-persons',
@@ -59,7 +48,7 @@ const listaPersonas: Persona[] = [
   // poder angular y otros componentes
   // CommonModule : imporata esto para los pipe
   imports: [MatToolbarModule, MatIconModule , MatCardModule , MatTableModule , CommonModule , MatPaginatorModule ,
-    MatSortModule , MatFormFieldModule , MatInputModule , MatTooltipModule , MatButtonModule , MatDialogModule],
+    MatSortModule , MatFormFieldModule , MatInputModule , MatTooltipModule , MatButtonModule , MatDialogModule , MatProgressBarModule , MatSnackBarModule],
   templateUrl: './list-persons.component.html', //lo q se vera
   styleUrl: './list-persons.component.css'  //estilos
 })
@@ -77,7 +66,8 @@ export class ListPersonsComponent  implements OnInit , AfterViewInit{
   // data source para el paginator
   dataSource: MatTableDataSource<Persona>;
 
-
+  // para mostrar el proogres bar o snniper
+  loading: boolean = false;
 
   // paginator
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -89,9 +79,14 @@ export class ListPersonsComponent  implements OnInit , AfterViewInit{
   // inicia
   // dialog:MatDialog : para el modal
   // _personaService : un servicio inicia _
-  constructor(public dialog:MatDialog ,private _personaService:PersonaService){
-      // paginator
-    this.dataSource = new MatTableDataSource(listaPersonas);
+  // _snackBar: MatSnackBar : es para los modal mensajes pequeños su configuracion
+  constructor(public dialog:MatDialog ,private _personaService:PersonaService ,
+    private _snackBar: MatSnackBar
+  ){
+      // tabla data
+    // this.dataSource = new MatTableDataSource(listaPersonas);
+
+    this.dataSource = new MatTableDataSource();
   }
   ngOnInit(): void {
     this.obtenerPersonas();
@@ -99,14 +94,25 @@ export class ListPersonsComponent  implements OnInit , AfterViewInit{
 
 
 
+  // metodo obitiene data del service all Personas
   obtenerPersonas(){
-    this._personaService.getPersonas().subscribe( data =>{
-      console.log(data);
-    })
+    // snipper
+    this.loading = true;
+          this._personaService.getPersonas().subscribe( data =>{
+            // snipper
+            this.loading = false;
+
+
+            // table agrega data
+            this.dataSource.data = data;
+
+                // paginacion
+          this.dataSource.paginator = this.paginator;
+          // ordenamiento
+          this.dataSource.sort = this.sort;
+          })
 
   }
-
-
 
 
 
@@ -132,6 +138,8 @@ export class ListPersonsComponent  implements OnInit , AfterViewInit{
     // guarda el valor
     const filterValue = (event.target as HTMLInputElement).value;
     // filtra de la data x el campo de apellido y nombre
+    // toLowerCase : convierte a minusculas
+    // trim : quita el espacio en blanco a los costados
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
@@ -144,28 +152,50 @@ export class ListPersonsComponent  implements OnInit , AfterViewInit{
     // muestra otro componente
     const dialogRef = this.dialog.open(AgregarEditarPersonaComponent, {
       // estilos para el componente mostrado
-      width:'6  50px',
+      width:'650px',
       disableClose:true
     });
 
     // cerrar
     // cerrar componente
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+
+      // verificando si se registro para lista nuevamente
+      // result es la variable booleana del modal registrar
+      if(result){
+              console.log(`Dialog result: ${result}`); //printer
+              this.obtenerPersonas();//ejcuta el listado
+      }
+
+      // si no registro entonces no lista nuevamente pq es false
+      //  [mat-dialog-close]="false" del boton cancelar en el modal
+
     });
   }
 
 
 
 
+  // metodo elimina persona de la tabla
+  deletePersona(id : number){
+        // snipper
+        this.loading = true;
+    this._personaService.deletePersona(id).subscribe(()=>{
+      //lista de nuevo si ya elimino
+      this.obtenerPersonas();
+      this.msjExito();
+    })
+  }
 
 
-
-
-
-
-
-
+  // mensaje eliminado
+  msjExito(){
+    // llama al mensaje
+    this._snackBar.open('la persona fue eliminada','',{
+      // tiempo 2 segundos que dura en msj
+      duration:2000
+    })
+  }
 
 
 

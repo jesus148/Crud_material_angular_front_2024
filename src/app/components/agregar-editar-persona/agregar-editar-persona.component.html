@@ -1,9 +1,16 @@
 
 
-<!-- MODAL PA ACTUALIZAR Y AGREGAR -->
-<!-- mat-dialog-content : es el modal  -->
-<!-- mat-form-field : formulario -->
-<h2 mat-dialog-title>Agregar Persona</h2>
+<div class="container">
+  <!-- MODAL PA ACTUALIZAR Y AGREGAR -->
+  <!-- mat-dialog-content : es el modal  -->
+  <!-- mat-form-field : formulario -->
+  <h2 mat-dialog-title>Agregar Persona</h2>
+
+  <!-- es para el spinner -->
+  <!-- [diameter]="30" : diametro -->
+  <mat-spinner *ngIf="loading" [diameter]="30"></mat-spinner>
+
+</div>
 
 
 <!-- [formGroup]="form" : igual al form en .ts -->
@@ -35,7 +42,7 @@
            </span>
            <!-- validacion para maximo 20 caracteres -->
           <span *ngIf="form.get('nombre')?.hasError('maxlength')">
-            el nombre es un campo <strong>requerido</strong>
+            el nombre es un campo <strong>es de 20 caracteres</strong>
            </span>
         </div>
       </div>
@@ -86,6 +93,7 @@
   <div class="row">
     <div class="column">
       <mat-form-field appearance="fill">
+        <!-- el label es el titutlo q sale x default ,si no marcas saldra error -->
         <mat-label>Tipo Documento</mat-label>
         <mat-select formControlName="tipoDocumento" >
           <!-- tipoDocumento : array lo muestra aqui  -->
@@ -106,12 +114,12 @@
       <div class="error" >
         <!--hasError('required') : se muestra si hay error en el required -->
         <!-- ('nombre')?.touched : si toco el input -->
-        <span *ngIf="form.get('documento')?.hasError('required') && form.get('documento')?.touched ">
-          el documento es un campo <strong>requerido</strong>
-         </span>
+        <span *ngIf="form.get('documento')?.hasError('required') && form.get('documento')?.touched">
+          El documento es un campo <strong>requerido</strong>
+        </span>
         <span *ngIf="form.get('documento')?.hasError('pattern')">
-          el documento debe tener solo <strong>numeros</strong>
-         </span>
+          El documento debe tener solo <strong>numeros</strong>
+        </span>
       </div>
     </div>
   </div>
@@ -148,11 +156,11 @@
 
   <!-- En Angular Material, la directiva <mat-dialog-actions> se utiliza para definir las acciones dentro de un diálogo (mat-dialog), como los botones de "Aceptar", "Cancelar", u otros botones de acción que quieras colocar en el pie del cuadro de diálogo. -->
   <mat-dialog-actions align="end">
-    <!-- mat-dialog-close : pa cerrar  -->
-    <button type="button" mat-button mat-dialog-close>Cancelar</button>
+    <!-- mat-dialog-close : pa cerrar se le envia un false para no listar de nuevo -->
+    <button type="button" mat-button [mat-dialog-close]="false">Cancelar</button>
     <!-- cdkFocusInitial : se marca primero el focus  -->
     <!-- type="submit" : es enviar el formulario  -->
-    <!-- [disabled]="form.invalid" : desabilita si el form es invalido -->
+    <!-- [disabled]="form.invalid" : desabilita si el form(validaciones) es invalido -->
     <button type="submit" [disabled]="form.invalid"   mat-button  >Aceptar</button>
   </mat-dialog-actions>
 

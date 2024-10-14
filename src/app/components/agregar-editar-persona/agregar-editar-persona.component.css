@@ -12,7 +12,7 @@ mat-form-field{
 }
 .column{
   /* Cuando se usa un valor como 50% directamente en la propiedad flex, en realidad estás definiendo el flex-basis, que significa que el ancho inicial de ese elemento debe ser el 50% del contenedor flexible. En este caso, no se especifican los valores de grow ni de shrink, y su valor predeterminado es 1. Es decir, el navegador lo interpreta así:
-  flex: 1 1 50%; */
+  flex: 0 1 50%; este seria el valor  */
   /* el 50% es el basics  */
   flex: 50%;
   margin: 0px 5px;
@@ -24,4 +24,10 @@ mat-form-field{
 .error{
   color: #B0304B;
   margin-top: -10px;
+}
+
+
+.container{
+  display: flex;
+  justify-content: space-between;
 }

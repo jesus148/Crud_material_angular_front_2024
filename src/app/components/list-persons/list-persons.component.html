@@ -5,12 +5,21 @@
 </mat-toolbar>
 
 
+<!-- *ngIf="loading"  : muestra el snniper si es true -->
+<mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+
+
 <!-- mat-card : contenedor de contenido para fotos y videos .etc -->
-<mat-card >
+<!-- *ngIf="!loading" : muestra el snniper el false -->
+<mat-card *ngIf="!loading" >
 
   <div style="display: flex; flex-direction: row;">
 
     <div style="width: 85%; text-align: center;">
+
+<!-- mat-form-field :
+es un componente utilizado para envolver varios componentes de material angular y aplicar comunes Campo de texto estilos como el mensajes de subrayado, etiqueta flotante y sugerencias.
+En este documento, "campo de formulario" se refiere al componente contenedor. <mat-form-field> y "control de campo de formulario" se refiere al componente que el <mat-form-field> esta envolviendo (por ejemplo, la entrada, el área de texto, la selección, etc..) -->
 
       <mat-form-field appearance="fill" class="custom">
         <mat-label>Filtro</mat-label>
@@ -36,7 +45,7 @@
     <!-- mat-sort-header : es la columna q quieres filtrar -->
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-      <!-- desenvolsando data  , usando la variable element , desenvolsando con la clase guia  -->
+      <!-- desenvolsando data  , usando la variable element , desenvolsando con la clase guia sus atributos  -->
       <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
     </ng-container>
 
@@ -55,10 +64,9 @@
 
 
     <ng-container matColumnDef="tipoDocumento">
-      <th mat-header-cell *matHeaderCellDef> Tipo de documento </th>
-      <!-- desenvolsando data  -->
-      <td mat-cell *matCellDef="let element"> {{element.tipoDocumentos}} </td>
-    </ng-container>
+      <th mat-header-cell *matHeaderCellDef> Tipo Documento </th>
+      <td mat-cell *matCellDef="let element"> {{element.tipoDocumento}} </td>
+  </ng-container>
 
     <ng-container matColumnDef="documento">
       <th mat-header-cell *matHeaderCellDef> documento </th>
@@ -81,7 +89,8 @@
       <td mat-cell *matCellDef="let element">
         <!-- matTooltip="Editar" : muestra un ayuda al seleccionar el btn -->
         <mat-icon class="btnEdit"    matTooltip="Editar">edit</mat-icon>
-        <mat-icon class="btnDelete">delete</mat-icon>
+        <!-- element.id : envia el id 1 elemento de la tabla -->
+        <mat-icon (click)="deletePersona(element.id)" class="btnDelete">delete</mat-icon>
        </td>
     </ng-container>
 
