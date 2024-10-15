@@ -146,14 +146,20 @@ export class ListPersonsComponent  implements OnInit , AfterViewInit{
 
 
 
+  // METODO PARA ACTUALIZAR Y AGREGAR
   // modal comonente hijo
-  addEditPerson(){
+  addEditPerson(id?: number){
+
+    console.log(id);
+
     // abrir
     // muestra otro componente
     const dialogRef = this.dialog.open(AgregarEditarPersonaComponent, {
       // estilos para el componente mostrado
       width:'650px',
-      disableClose:true
+      //al dar click fuera del modal no debe cerrarse
+      disableClose:true,
+      data:{id :id}
     });
 
     // cerrar

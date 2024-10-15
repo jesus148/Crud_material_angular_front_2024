@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
-import {MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+import {MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
@@ -49,14 +49,22 @@ export class AgregarEditarPersonaComponent {
   maxDate : Date;
 
 
+  // Para el modal
+// titutlo modal cambiara segun sea registrar o actualizar
+  Operacion: string = 'Agregar '; //x default saldra agregar
+  id:number | undefined; // el id
 
 
 
   // inicia
   // public dialogRef : MatDialogRef<AgregarEditarPersonaComponent> : para el modal
   // private fb: FormBuilder : validaciones
+  // _personaService:PersonaService : servicio
+  // private _snackBar: MatSnackBar : mensajes
+  // dateAdapter: DateAdapter<any> : el date picker sea en español de las fechas
+  // @Inject(MAT_DIALOG_DATA) public data: any : es para recibir la data del listado solo 1 objeto
   constructor(public dialogRef : MatDialogRef<AgregarEditarPersonaComponent> ,
-    private fb: FormBuilder , private _personaService:PersonaService ,    private _snackBar: MatSnackBar , private dateAdapter: DateAdapter<any>
+    private fb: FormBuilder , private _personaService:PersonaService ,    private _snackBar: MatSnackBar , private dateAdapter: DateAdapter<any> , @Inject(MAT_DIALOG_DATA) public data: any
   ){
 
     // fecha actual
@@ -78,11 +86,50 @@ export class AgregarEditarPersonaComponent {
       documento:[null, [Validators.required , Validators.pattern("^[0-9]*$")] ],
       fechaNacimiento:[null, Validators.required]
     })
+    // printer data del listado
+    // console.log("data" , data);
 
-    // formato a la fecha en españon osea el datepciker las opciones sera en español
+    // setea la variable id si se envia del listado
+    this.id = data.id;
+
+
+    // formato a la fecha en español osea el datepciker las opciones sera en español
     dateAdapter.setLocale('es');
   }
   ngOnInit(): void {
+    // ejecuta el metodo
+    this.esEditar(this.id);
+  }
+
+
+  // verificando si es editar
+  esEditar(id : number | undefined ){
+    // si tiene el id es editar
+    if( id !== undefined){
+      // cambiar el titulo del modal
+      this.Operacion = 'Editar '
+      this.getPersona(id);
+    }
+  }
+
+
+
+  // metodo obtener todo persona x id
+  // para llenar los campos puesdes usar el setvalue del form pero se debe llenar todos los campos , tambien puedes usar el patchValue y solo llenar ciertos campos
+  getPersona(id:number){
+    this._personaService.getPersona(id).subscribe( data =>{
+      // console.log(data);
+      // llenando los campos del modal con la data
+      this.form.setValue({
+        // campos = al form   |    data del rest
+        nombre:data.nombre,
+        apellido:data.apellido,
+        correo:data.correo,
+        tipoDocumento:this.tipoDocumento,
+        documento: data.documento,
+        fechaNacimiento : data.fechaNacimiento
+      })
+    })
   }
 
 

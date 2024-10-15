@@ -41,4 +41,18 @@ addPersona(persona : Persona): Observable<void>{
 }
 
 
+
+// getPersonaxid
+getPersona(id:number):Observable<Persona>{
+ return this.http.get<Persona>(`${this.myAppUrl}${this.myApiUrl}${id}`)
+}
+
+
+
+// metodoactualizar
+updatePersona(id:number , persona:Persona):Observable<void>{
+  return this.http.put<void>(`${this.myAppUrl}${this.myApiUrl}${id}`, persona)
+}
+
+
 }
