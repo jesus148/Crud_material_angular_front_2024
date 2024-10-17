@@ -56,6 +56,9 @@ export class AgregarEditarPersonaComponent {
 
 
 
+
+
+
   // inicia
   // public dialogRef : MatDialogRef<AgregarEditarPersonaComponent> : para el modal
   // private fb: FormBuilder : validaciones
@@ -92,7 +95,6 @@ export class AgregarEditarPersonaComponent {
     // setea la variable id si se envia del listado
     this.id = data.id;
 
-
     // formato a la fecha en español osea el datepciker las opciones sera en español
     dateAdapter.setLocale('es');
   }
@@ -117,18 +119,32 @@ export class AgregarEditarPersonaComponent {
   // metodo obtener todo persona x id
   // para llenar los campos puesdes usar el setvalue del form pero se debe llenar todos los campos , tambien puedes usar el patchValue y solo llenar ciertos campos
   getPersona(id:number){
-    this._personaService.getPersona(id).subscribe( data =>{
-      // console.log(data);
+    this._personaService.getPersona(id).subscribe( (data :any) =>{
+
+      console.log(new Date(data[0].fechaNacimiento))
+
+
       // llenando los campos del modal con la data
       this.form.setValue({
         // campos = al form   |    data del rest
-        nombre:data.nombre,
-        apellido:data.apellido,
-        correo:data.correo,
-        tipoDocumento:this.tipoDocumento,
-        documento: data.documento,
-        fechaNacimiento : data.fechaNacimiento
+        nombre:data[0].nombre,
+        apellido:data[0].apellido,
+        correo:data[0].correo,
+        tipoDocumento:data[0].tipoDocumento,
+        documento: data[0].documento,
+        fechaNacimiento : new Date(data[0].fechaNacimiento)
       })
+
+
+      // this.form.setValue({
+      //   // campos = al form   |    data del rest
+      //   nombre:data[0].nombre,
+      //   apellido:data.apellido,
+      //   correo:data.correo,
+      //   tipoDocumento:this.tipoDocumento,
+      //   documento: data.documento,
+      //   fechaNacimiento : data.fechaNacimiento
+      // })
     })
   }
 
@@ -149,6 +165,7 @@ export class AgregarEditarPersonaComponent {
     //   return;
     // }
 
+    console.log(this.form.value.fechaNacimiento)
 
 
     // con la clase guia llenamos los atibutos del form html
@@ -176,24 +193,43 @@ export class AgregarEditarPersonaComponent {
     // print form para ver sus metodos
     // console.log(this.form);
 
-    // metodo service registra
-    this._personaService.addPersona(persona).subscribe( ()=>{
-      this.loading = false; //spinner close
 
-      this.msjExito();
-      // envias un dialogRef.close(true) osea un true
-      // para confirmar que se registro , es el listado
-      this.dialogRef.close(true); //close modal
-      // console.log('persona agregada'); //printer
-    })
+
+    // si el id es null entonces se registra
+    if(this.id == undefined){
+      // metodo service registra
+      this._personaService.addPersona(persona).subscribe( ()=>{
+        this.loading = false; //spinner close
+
+        this.msjExito('agregada');
+        // envias un dialogRef.close(true) osea un true
+        // para confirmar que se registro , es el listado
+        this.dialogRef.close(true); //close modal
+        // console.log('persona agregada'); //printer
+      })
+
+      // si el id no es vacio se actualiza
+    }else{
+
+      this._personaService.updatePersona(this.id,persona).subscribe( ()=>{
+        this.loading = false;
+        this.msjExito('actualizada');
+        this.dialogRef.close(true);
+      })
+    }
+
 
   }
 
 
+
+
+
+
     // mensaje registrado
-    msjExito(){
+    msjExito(operacion: string){
       // llama al mensaje
-      this._snackBar.open(`${this.form.value.nombre} fue agregado con exito`,'',{
+      this._snackBar.open(`la persona fue ${operacion} con exito`,'',{
         // tiempo 2 segundos que dura en msj
         duration:2000
       })

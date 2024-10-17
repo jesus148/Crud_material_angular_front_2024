@@ -150,7 +150,6 @@ export class ListPersonsComponent  implements OnInit , AfterViewInit{
   // modal comonente hijo
   addEditPerson(id?: number){
 
-    console.log(id);
 
     // abrir
     // muestra otro componente
