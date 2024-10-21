@@ -166,7 +166,7 @@ export class ListPersonsComponent  implements OnInit , AfterViewInit{
     // cerrar componente
     dialogRef.afterClosed().subscribe(result => {
 
-      // verificando si se registro para lista nuevamente
+      // verificando si se registro o actualizo para lista nuevamente
       // result es la variable booleana del modal registrar
       if(result){
               console.log(`Dialog result: ${result}`); //printer

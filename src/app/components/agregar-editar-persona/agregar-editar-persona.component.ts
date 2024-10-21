@@ -41,6 +41,7 @@ export class AgregarEditarPersonaComponent {
   form: FormGroup;
 
 
+
   // para el spinner
   loading:boolean = false;
 
@@ -52,7 +53,7 @@ export class AgregarEditarPersonaComponent {
   // Para el modal
 // titutlo modal cambiara segun sea registrar o actualizar
   Operacion: string = 'Agregar '; //x default saldra agregar
-  id:number | undefined; // el id
+  id:number | undefined; // el id en caso sea update
 
 
 
@@ -104,7 +105,7 @@ export class AgregarEditarPersonaComponent {
   }
 
 
-  // verificando si es editar
+  // verificando si es editar cambiar el title
   esEditar(id : number | undefined ){
     // si tiene el id es editar
     if( id !== undefined){
@@ -123,7 +124,8 @@ export class AgregarEditarPersonaComponent {
 
     this._personaService.getPersona(id).subscribe( (data :any) =>{
 
-      console.log(new Date(data[0].fechaNacimiento))
+
+
 
 
 
@@ -135,8 +137,8 @@ export class AgregarEditarPersonaComponent {
         correo:data[0].correo,
         tipoDocumento:data[0].tipoDocumento,
         documento: data[0].documento,
-
-        fechaNacimiento : data[0].fechaNacimiento
+        // cuando es editar se el date 2022-09-05 del back se formatea con el dato 2022-09-05T03:00:00.00Z
+        fechaNacimiento :   new Date(data[0].fechaNacimiento)
       })
 
 
@@ -174,11 +176,6 @@ export class AgregarEditarPersonaComponent {
     // }
 
 
-    console.log(this.form.value.fechaNacimiento);
-
-
-
-
     // con la clase guia llenamos los atibutos del form html
     // recordar que los form guardan la data de los inputs
     const persona:Persona ={
@@ -196,6 +193,7 @@ export class AgregarEditarPersonaComponent {
       // slice(0,10) : corta
       fechaNacimiento : this.form.value.fechaNacimiento.toISOString().slice(0,10)
     }
+
 
 
     // muestra el spinner
@@ -222,9 +220,9 @@ export class AgregarEditarPersonaComponent {
       // (this.id , persona). : envia el id y el objeto
         this._personaService.updatePersona(this.id,persona).subscribe( ()=>{
 
-          this.loading = false;
-          this.msjExito('actualizada');
-          this.dialogRef.close(true);
+          this.loading = false; //spinner para dejar mostrar
+          this.msjExito('actualizada'); //printer
+          this.dialogRef.close(true); //  cierra el modal para listar nuevamente
         })
       }
 
@@ -236,8 +234,6 @@ export class AgregarEditarPersonaComponent {
 
 
     // mensaje registrado
-
-
     msjExito(operacion: string){
 
       // llama al mensaje
