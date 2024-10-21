@@ -151,7 +151,6 @@ export class ListPersonsComponent  implements OnInit , AfterViewInit{
   addEditPerson(id?: number){
 
 
-
     // abrir
     // muestra otro componente
     const dialogRef = this.dialog.open(AgregarEditarPersonaComponent, {

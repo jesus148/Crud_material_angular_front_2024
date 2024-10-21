@@ -3,6 +3,7 @@
 // CLASE GUIA
 // atributos igual de la tabla de la bd
 
+
 export interface Persona{
   id?: number;
   nombre: string;
